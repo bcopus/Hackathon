@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Lyricist</ion-title>
+  </ion-navbar>
+</ion-header> 
+
+<ion-content padding>
+<ion-slides pager>
+
+  <ion-slide>
+  <ion-scroll scrollY="true" style="height:90vh">
+  <ion-list>
+    <ion-card *ngFor="let section of sections">
+      <ion-item>
+        <ion-label>Click Here to Select Rhyme Pattern</ion-label>
+        <ion-select name="rhymePattern" style="max-width: 50%"
+            [(ngModel)]="section.rymePattern" (ionChange)="rhymePatternChange(section, section.rymePattern)">
+          <ion-option value="AABB" selected="true">A-A-B-B</ion-option>
+          <ion-option value="ABAB">A-B-A-B</ion-option>
+          <ion-option value="ABCB">A-B-C-B</ion-option>
+          <ion-option value="AABBC">A-A-B-B-C</ion-option> 
+          <ion-option value="AABBAA">A-A-B-B-A-A</ion-option>
+          <ion-option value="AABBCC">A-A-B-B-C-C</ion-option> 
+          <ion-option value="AA">A-A</ion-option> 
+        </ion-select>
+      </ion-item>
+  
+      <ion-label full class="typeYourLyrics">Type Your Lyrics Here!</ion-label>
+      <ion-grid>
+        <ion-row nowrap justify-content-start class="lyricRow" *ngFor="let line of section.lines">
+          <ion-col col-1 class="lyricRow" style="background-color: lightcyan">{{line.num}}</ion-col>
+          <ion-col col-10 class="lyricRow" style="background-color: lightyellow">
+            <ion-input (focus)="lyricLineFocus(section, line.num)" 
+              (keyup)="lyricChange(section, line, $event.target.value)"
+              value="{{line.text}}"></ion-input>
+          </ion-col>
+          <ion-col col-1 class="lyricRow">
+              {{line.rhyme}}</ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-label fixed>Suggestions</ion-label>
+      <ion-scroll ng-hide=section.outOfFocus scrollY="true" style="height:30vh">
+        <ion-list no-lines>
+          <button round outline medium *ngFor="let suggestion of section.suggestions" 
+            (click)="suggestionSelected(section, suggestion)">
+            {{suggestion.word}}
+          </button> 
+        </ion-list>
+      </ion-scroll>
+    </ion-card>
+
+    <button (click)="addSection()">Add another section</button>
+
+    </ion-list>
+  </ion-scroll>
+  </ion-slide>
+
+  <ion-slide style="background-color: #396060; color: antiquewhite">
+    <ion-item>
+      <ion-input type="text" value="" placeholder="Name This Song"
+        style="color: #396060"></ion-input>
+    </ion-item>
+    <ion-card *ngFor="let section of sections" style="background-color: darkslategray; color: antiquewhite">
+      <ion-grid style="background-color: darkslategray; color: antiquewhite">
+        <ion-row *ngFor="let line of section.lines">
+          <ion-col col-1>{{line.num}} </ion-col>
+          <ion-col col-11 style="text-align: left">{{line.text}}</ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card>
+  </ion-slide>
+
+</ion-slides>
+</ion-content>
